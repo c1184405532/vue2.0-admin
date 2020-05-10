@@ -1,0 +1,59 @@
+<template>
+    <div class="home_page">
+        
+        <div class="button_box">
+            退出登录
+        </div>
+    </div>
+</template>
+
+<script>
+
+export default {
+    components: {
+        
+    },
+    props: {
+
+    },
+    data() {
+        return {
+           
+        };
+    },
+    computed: {
+
+    },
+    created() {
+
+    },
+    mounted() {
+        vm.$off('navBarRightClick').$on('navBarRightClick',(navBarData)=>{
+            console.log('home',navBarData)
+        })
+    },
+    watch: {
+
+    },
+    methods: {
+       loginOut(){
+            window.removeToken();
+            window.removeLocalStorage('routerIsBack')
+            this.$router.replace({
+                name:'user/login',
+            })
+       },
+    },
+};
+</script>
+
+<style scoped lang="less">
+    .button_box{
+        width: 100%;
+        text-align: center;
+    }
+    .login_out{
+        margin-top: 100px;
+
+    }
+</style>
