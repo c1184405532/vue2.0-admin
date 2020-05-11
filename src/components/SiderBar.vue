@@ -1,16 +1,16 @@
 <template>
-	<div class="sider_bar_box">
+	<div class="sider_bar_box" >
         <div class="logo" />
 		<a-menu
-			style="width: 256px"
+			
 			:default-selected-keys="['1']"
-			:open-keys.sync="openKeys"
+			:default-open-keys="['sub1']"
 			mode="inline"
             theme="dark"
 			@click="handleClick"
             :inline-collapsed="collapsed"
 		>
-			<a-sub-menu key="sub1" @titleClick="titleClick">
+			<a-sub-menu key="sub1" >
 				<span slot="title">
 					<a-icon type="mail" />
 					<span>Navigation One</span>
@@ -28,7 +28,7 @@
 					<a-menu-item key="4">Option 4</a-menu-item>
 				</a-menu-item-group>
 			</a-sub-menu>
-			<a-sub-menu key="sub2" @titleClick="titleClick">
+			<a-sub-menu key="sub2" >
 				<span slot="title">
 					<a-icon type="appstore" />
 					<span>Navigation Two</span>
@@ -72,7 +72,11 @@ export default {
 	computed: {},
 	created() {},
 	mounted() {},
-	watch: {},
+	watch: {
+		collapsed(newValue,oldValue){
+			console.log(newValue,oldValue)
+		}
+	},
 	methods: {
         handleClick(e) {
             console.log('click', e);

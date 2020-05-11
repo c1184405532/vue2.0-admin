@@ -6,7 +6,9 @@
                 collapsible
                 v-model="collapsed"
             >
-                <SiderBar/>
+                <SiderBar
+                    :collapsed="collapsed"
+                />
             </a-layout-sider>
             <a-layout>
                 <a-layout-header>Header</a-layout-header>
