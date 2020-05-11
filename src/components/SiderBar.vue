@@ -1,6 +1,8 @@
 <template>
-	<div class="sider_bar_box" >
-        <div class="logo" />
+	<div :class="collapsed?'sider_bar_box sider_bar_collapsed':'sider_bar_box'" >
+        <div :class="collapsed?'logo logo_collapsed':'logo'">
+            logo
+        </div>
 		<a-menu
 			
 			:default-selected-keys="['1']"
@@ -9,6 +11,7 @@
             theme="dark"
 			@click="handleClick"
             :inline-collapsed="collapsed"
+            
 		>
 			<a-sub-menu key="sub1" >
 				<span slot="title">
@@ -73,9 +76,7 @@ export default {
 	created() {},
 	mounted() {},
 	watch: {
-		collapsed(newValue,oldValue){
-			console.log(newValue,oldValue)
-		}
+		
 	},
 	methods: {
         handleClick(e) {
@@ -93,9 +94,15 @@ export default {
     width: 256px;
 
 }
+.sider_bar_collapsed{
+    width: 80px;
+}
 .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
+}
+.logo_collapsed{
+    width: 48px;
 }
 </style>
