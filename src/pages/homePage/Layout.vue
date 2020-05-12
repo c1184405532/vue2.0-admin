@@ -10,12 +10,15 @@
             >
                 <SiderBar
                     :collapsed="collapsed"
+                    
                 />
             </a-layout-sider>
             <a-layout class="content_box">
                 <a-layout-header class="layout_header">
                     <HeaderBar
                         :userData="userData"
+                        :toggleClick="toggleClick"
+                        :collapsed="collapsed"
                     />
                 </a-layout-header>
                 <a-layout-content>Content</a-layout-content>
@@ -64,14 +67,10 @@ export default {
         
     },
     methods: {
-        //点击底部跳转的回调
-        tabbarCallback(tabbarData){
-            console.log(tabbarData)
-            this.isShowNavBar = tabbarData.navBarType;
-            this.navBarTitle = tabbarData.navTitle ? tabbarData.navTitle : tabbarData.tabbarTitle;
-            this.navRightIcon = tabbarData.navRightIcon;
-            this.navRightText = tabbarData.navRightText;
-            this.navRightColor = tabbarData.navRightColor;
+        //点击菜单收起展开按钮
+        toggleClick(){
+            console.log('aaa')
+            this.collapsed = !this.collapsed
         },
         eventClientScale(){
             //监听屏幕缩放 小于750 收缩侧边栏 大于展开侧边栏
