@@ -1,5 +1,27 @@
 <template>
     <div class="layout_page_box">
+        <a-drawer
+            placement="left"
+            wrapClassName="sider_drawer_box"
+            :closable="false"
+            :keyboard="false"
+            :visible="collapsed ? false : true"
+            :after-visible-change="afterVisibleChange"
+            :bodyStyle="{height:'100vh',padding:0}"
+            @close="onClose"
+            v-if="isMobile"
+            >
+           <!-- <div style="color:#fff;background:#001529;height:100vh">
+                
+                <div style="width:256px">
+                    瓦达啊大啊大道啊瓦达ad啊大打瓦达ad哇ad啊瓦达大 哇
+                </div>
+           </div> -->
+            <SiderBar
+                :collapsed="collapsed"
+                :isMobile="isMobile"
+            />
+        </a-drawer>
         <a-layout>
             <a-layout-sider 
                 :width="256"
@@ -7,21 +29,27 @@
                 v-model="collapsed"
                 :trigger="null"
                 class="layout_sider"
+                v-if="!isMobile"
             >
                 <SiderBar
                     :collapsed="collapsed"
+                    :isMobile="isMobile"
                     
                 />
             </a-layout-sider>
+           
             <a-layout class="content_box">
                 <a-layout-header class="layout_header">
                     <HeaderBar
                         :userData="userData"
                         :toggleClick="toggleClick"
                         :collapsed="collapsed"
+                        :isMobile="isMobile"
                     />
                 </a-layout-header>
-                <a-layout-content>Content</a-layout-content>
+                <a-layout-content>
+                    content
+                </a-layout-content>
                 <a-layout-footer>Footer</a-layout-footer>
             </a-layout>
         </a-layout>
@@ -34,10 +62,12 @@
 <script>
 import SiderBar from '@/components/SiderBar.vue'
 import HeaderBar from '@/components/HeaderBar.vue'
+
 export default {
     components: {
        SiderBar,
-       HeaderBar
+       HeaderBar,
+     
     },
     props: {
 
@@ -45,13 +75,15 @@ export default {
     data() {
         return {
             collapsed:false,
+            isMobile:false,
             userData:{
                 name:'陈禹廷',
                 avatar:require('@/assets/avatar.jpg'),
                 list:[
                     {icon:'user',text:'个人中心',routeName:''}
                 ]
-            }
+            },
+       
         };
     },
     computed: {
@@ -69,14 +101,32 @@ export default {
     methods: {
         //点击菜单收起展开按钮
         toggleClick(){
-            console.log('aaa')
             this.collapsed = !this.collapsed
         },
+        onClose(e){
+            console.log('aaa',e)
+            this.collapsed = true;
+        },
+        afterVisibleChange(){
+
+        },
         eventClientScale(){
+            if(document.body.clientWidth < 750){
+                this.collapsed = true;
+                this.isMobile = true;
+            }else{
+                this.isMobile = false;
+            }
+            if(this.collapsed && document.body.clientWidth > 750){
+                this.collapsed = false;
+            }
             //监听屏幕缩放 小于750 收缩侧边栏 大于展开侧边栏
             addEventListener('resize',(e)=>{
                 if(document.body.clientWidth < 750){
                     this.collapsed = true;
+                    this.isMobile = true;
+                }else{
+                    this.isMobile = false;
                 }
                 if(this.collapsed && document.body.clientWidth > 750){
                     this.collapsed = false;
@@ -108,4 +158,13 @@ export default {
         width: 100%;
         padding: 0;
     }
+</style>
+<style lang="less">
+    // .sider_drawer_box{
+    //     .ant-drawer-body{
+    //         height: 100vh;
+    //         padding: 0px;
+    //     }
+        
+    // }
 </style>

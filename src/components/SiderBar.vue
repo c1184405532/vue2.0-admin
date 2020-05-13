@@ -1,7 +1,8 @@
 <template>
-	<div :class="collapsed?'sider_bar_box sider_bar_collapsed':'sider_bar_box'" >
-        <div :class="collapsed?'logo logo_collapsed':'logo'">
-            logo
+	<div :class="!isMobile && collapsed?'sider_bar_box sider_bar_collapsed':'sider_bar_box'">
+        <div :class="!isMobile &&  collapsed?'logo logo_collapsed':'logo'">
+            <img class="logo_img" src="@/assets/admin_logo.jpg" alt="">
+            <div class="text" v-show="isShowText()">Antd of Vue</div>
         </div>
 		<a-menu
 			
@@ -10,7 +11,7 @@
 			mode="inline"
             theme="dark"
 			@click="handleClick"
-            :inline-collapsed="collapsed"
+            :inline-collapsed="isMobile?false:collapsed"
             
 		>
 			<a-sub-menu key="sub1" >
@@ -55,6 +56,7 @@
 			</a-sub-menu>
 		</a-menu>
 	</div>
+   
 </template>
 
 <script>
@@ -64,7 +66,11 @@ export default {
         collapsed:{
             type:Boolean,
             default:false
-        }
+        },
+        isMobile:{
+            type:Boolean,
+            default:false
+        },
     },
 	data() {
 		return {
@@ -85,6 +91,14 @@ export default {
         titleClick(e) {
             console.log('titleClick', e);
         },
+        isShowText(){
+            if(this.isMobile){
+                return true
+            }else{
+                return this.collapsed ? false : true
+            }
+            
+        },
     }
 }
 </script>
@@ -92,15 +106,41 @@ export default {
 <style scoped lang="less">
 .sider_bar_box{
     width: 256px;
+    background: #001529;
+    //transition: all .2s;
+    //position: relative;
+    //z-index: 10;
+    min-height: 100%;
+    //box-shadow: 2px 0 6px rgba(0,21,41,.35);
 
 }
 .sider_bar_collapsed{
     width: 80px;
 }
 .logo {
-    height: 32px;
-    background: rgba(255, 255, 255, 0.2);
-    margin: 16px;
+    height: 64px;
+    //background: rgba(255, 255, 255, 0.2);
+    //margin: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .logo_img{
+        
+        height: 32px;
+        width: 32px;
+        border-radius: 8px;
+        margin-left: 24px;            
+    }
+    .text{
+        display: inline-block;
+        margin: 0 0 0 12px;
+        color: #fff;
+        font-weight: 600;
+        font-size: 20px;
+        vertical-align: middle;
+        animation: fade-in;
+        animation-duration: .3s;
+    }
 }
 .logo_collapsed{
     width: 48px;

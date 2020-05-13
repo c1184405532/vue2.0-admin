@@ -3,7 +3,8 @@
         
              
         <div class="left" @click="toggleClick">
-            <a-icon :style="{fontSize:'20px'}" :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
+            <img class="logo" v-show="isMobile" src="@/assets/admin_logo.jpg" alt="">
+            <a-icon class="menu" :style="{fontSize:'20px'}" :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
         </div>
         <div class="right">
             <a-config-provider>
@@ -69,7 +70,7 @@
             <a-dropdown overlayClassName="user_drop_box"  class="user_drop_box">
                 <div class="user_content">   
                     <img :src="userData.avatar" alt="" class="user_avatar">
-                    <div class="user_name">{{userData.name}}</div>
+                    <div class="user_name" v-if="!isMobile">{{userData.name}}</div>
                 </div>
                 <a-menu slot="overlay">
                     <a-menu-item class="user_list_box" :key="index" v-for="(value,index) in userData.list">
@@ -113,6 +114,10 @@ export default {
             */
         },
         collapsed:{
+            type:Boolean,
+            default:false,
+        },
+        isMobile:{
             type:Boolean,
             default:false,
         },
@@ -196,9 +201,21 @@ export default {
         background: #fff;
         box-shadow: 0 1px 4px rgba(0,21,41,.08);
         justify-content: space-between;
+        
         .left{
-            padding: 0 24px;
+            
+            display: flex;
             cursor: pointer;
+            align-items: center;
+            .logo{
+                height: 32px;
+                width: 32px;
+                border-radius: 8px;
+                margin-left: 24px;
+            }
+            .menu{
+                padding: 0 24px;
+            }
         }
         .right{
             height: 100%;
