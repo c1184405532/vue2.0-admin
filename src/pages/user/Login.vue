@@ -103,7 +103,7 @@ export default {
                             window.setToken(res.data.token)
                             window.setLocalStorage('routerIsBack',true)
                             this.$router.replace({
-                                name:'layout/home',
+                                name:'homePage/layout',
                             })
                         }else if(res.message === '密码错误'){
                             this.form.setFields({

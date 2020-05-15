@@ -10,13 +10,7 @@
             :bodyStyle="{height:'100vh',padding:0}"
             @close="onClose"
             v-if="isMobile"
-            >
-           <!-- <div style="color:#fff;background:#001529;height:100vh">
-                
-                <div style="width:256px">
-                    瓦达啊大啊大道啊瓦达ad啊大打瓦达ad哇ad啊瓦达大 哇
-                </div>
-           </div> -->
+        >
             <SiderBar
                 :collapsed="collapsed"
                 :isMobile="isMobile"
@@ -34,7 +28,6 @@
                 <SiderBar
                     :collapsed="collapsed"
                     :isMobile="isMobile"
-                    
                 />
             </a-layout-sider>
            
@@ -48,7 +41,7 @@
                     />
                 </a-layout-header>
                 <a-layout-content>
-                    content
+                    <router-view/>
                 </a-layout-content>
                 <a-layout-footer>Footer</a-layout-footer>
             </a-layout>

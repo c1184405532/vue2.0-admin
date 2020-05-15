@@ -1,5 +1,5 @@
 import VueRouter from "vue-router";
-import homerouter from "./home"
+import ListRouter from "./list"
 //防止重复跳转同一路由报警告
 const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -15,9 +15,31 @@ VueRouter.prototype.push = function push(location) {
 //     console.log('浏览器回退',e);
     
 // })
+const Login = ()=> import('@/pages/user/Login.vue');
+const Layout = ()=> import('@/pages/homePage/Layout.vue');
 export default new VueRouter({
     routes: [
-        ...homerouter,
+        {
+            path:'/',
+            name:'/',
+            redirect: '/user/login',
+        },
+        {
+            meta: {},
+            path:'/user/login',
+            name:'user/login',
+            component:Login
+        }, 
+        {
+            meta: {type:'LayoutRouter'},
+            path:'/homePage/layout',
+            name:'homePage/layout',
+            component:Layout,
+            children:[
+                ...ListRouter,
+            ]
+        }, 
+        
     ],
     
     scrollBehavior(to,from,savedPosition){

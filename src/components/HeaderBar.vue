@@ -3,7 +3,7 @@
         
              
         <div class="left" @click="toggleClick">
-            <img class="logo" v-show="isMobile" src="@/assets/admin_logo.jpg" alt="">
+            <img class="logo" v-if="isMobile" src="@/assets/admin_logo.jpg" alt="">
             <a-icon class="menu" :style="{fontSize:'20px'}" :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
         </div>
         <div class="right">
@@ -172,9 +172,6 @@ export default {
 	methods: {
         logout(){
             console.log('退出登录')
-        },
-        ccc(){
-            console.log(222)
         },
         removeList(index){
             let title = "通知"

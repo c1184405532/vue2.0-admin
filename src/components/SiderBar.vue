@@ -2,64 +2,56 @@
 	<div :class="!isMobile && collapsed?'sider_bar_box sider_bar_collapsed':'sider_bar_box'">
         <div :class="!isMobile &&  collapsed?'logo logo_collapsed':'logo'">
             <img class="logo_img" src="@/assets/admin_logo.jpg" alt="">
-            <div class="text" v-show="isShowText()">Antd of Vue</div>
+            <div class="text" v-show="isShowText()">My Antd of Vue</div>
         </div>
 		<a-menu
-			
-			:default-selected-keys="['1']"
-			:default-open-keys="['sub1']"
+			v-model="menuSelectKeys"
+			:defaultOpenKeys="defaultOpenKeys"
 			mode="inline"
             theme="dark"
-			@click="handleClick"
             :inline-collapsed="isMobile?false:collapsed"
-            
 		>
-			<a-sub-menu key="sub1" >
-				<span slot="title">
-					<a-icon type="mail" />
-					<span>Navigation One</span>
-				</span>
-				<a-menu-item-group key="g1">
-					<template slot="title">
-						<a-icon type="qq" />
-						<span>Item 1</span>
-					</template>
-					<a-menu-item key="1">Option 1</a-menu-item>
-					<a-menu-item key="2">Option 2</a-menu-item>
-				</a-menu-item-group>
-				<a-menu-item-group key="g2" title="Item 2">
-					<a-menu-item key="3">Option 3</a-menu-item>
-					<a-menu-item key="4">Option 4</a-menu-item>
-				</a-menu-item-group>
-			</a-sub-menu>
-			<a-sub-menu key="sub2" >
-				<span slot="title">
-					<a-icon type="appstore" />
-					<span>Navigation Two</span>
-				</span>
-				<a-menu-item key="5">Option 5</a-menu-item>
-				<a-menu-item key="6">Option 6</a-menu-item>
-				<a-sub-menu key="sub3" title="Submenu">
-					<a-menu-item key="7">Option 7</a-menu-item>
-					<a-menu-item key="8">Option 8</a-menu-item>
-				</a-sub-menu>
-			</a-sub-menu>
-			<a-sub-menu key="sub4">
-				<span slot="title">
-					<a-icon type="setting" />
-					<span>Navigation Three</span>
-				</span>
-				<a-menu-item key="9">Option 9</a-menu-item>
-				<a-menu-item key="10">Option 10</a-menu-item>
-				<a-menu-item key="11">Option 11</a-menu-item>
-				<a-menu-item key="12">Option 12</a-menu-item>
-			</a-sub-menu>
+            <template v-for="value in routerData">
+                <a-sub-menu v-if="value.children" :key="value.meta.routTitle" >
+                    <span slot="title" >
+                        <img class="siderbar_img_icon" :src="value.meta.img" alt="" v-if="value.meta.img">
+                        <a-icon :type="value.meta.icon" v-else/>
+                        <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routTitle}}</span>
+                    </span>
+                    <template v-for="childrenValue in value.children">
+                        <a-sub-menu v-if="childrenValue.children" :key="childrenValue.meta.routTitle" >
+                            <span slot="title" class="item_title">
+                                <img class="siderbar_img_icon" :src="childrenValue.meta.img" alt="" v-if="childrenValue.meta.img">
+                                <a-icon :type="childrenValue.meta.icon" v-else/>
+                                <span>{{childrenValue.meta.routTitle}}</span>
+                            </span>
+                            <a-menu-item :key="subChildren.meta.routTitle"  v-for="subChildren in childrenValue.children">
+                                <img class="siderbar_img_icon" :src="subChildren.meta.img" alt="" v-if="subChildren.meta.img">
+                                <a-icon :type="subChildren.meta.icon" v-else/>
+                                {{subChildren.meta.routTitle}}
+                            </a-menu-item>
+                        </a-sub-menu>
+                        <a-menu-item v-else :key="childrenValue.meta.routTitle" >
+                            <img class="siderbar_img_icon" :src="childrenValue.meta.img" alt="" v-if="childrenValue.meta.img">
+                            <a-icon :type="childrenValue.meta.icon" v-else/>
+                            {{childrenValue.meta.routTitle}}
+                        </a-menu-item>
+                    </template>
+                </a-sub-menu>
+                <a-menu-item  :key="value.meta.routTitle" v-else>    
+                    <img class="siderbar_img_icon" :src="value.meta.img" alt="" v-if="value.meta.img">
+                    <a-icon :type="value.meta.icon" v-else/>
+                    <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routTitle}}   </span>   
+                </a-menu-item>
+            </template>
+			
 		</a-menu>
 	</div>
    
 </template>
 
 <script>
+import RouterPathData  from '@/router/index.js'
 export default {
 	components: {},
 	props: {
@@ -74,22 +66,53 @@ export default {
     },
 	data() {
 		return {
-            current: ['mail'],
-            openKeys: ['sub1'],
+            defaultOpenKeys: [''],
+            menuSelectKeys: [''],
+            routerData:{},
         }
 	},
 	computed: {},
-	created() {},
-	mounted() {},
+	created() {
+        //获取路由文件
+        this.routerData = RouterPathData.options.routes.map(
+            (route)=> (route.meta && route.meta.type === 'LayoutRouter' ? route : '')
+        ).filter( (routeData)=> (routeData) )[0].children;
+
+        //默认展开展开列表项 必须在未创建dom时配置 否则不生效
+        this.defaultOpenKeys = this.routerData[0] && this.routerData[0].meta ? [this.routerData[0].meta.routTitle] : [''];
+    },
+	mounted() {
+        
+        //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
+        this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routTitle] : ['']
+
+        //this.defaultOpenKeys = ['搜索列表','列表页']
+        //console.log(this.menuSelectKeys)
+        console.log(this.routerData)
+    },
 	watch: {
-		
+		menuSelectKeys(newValue){
+            this.gotoPage(newValue[0])
+            console.log(newValue)
+        },
 	},
 	methods: {
-        handleClick(e) {
-            console.log('click', e);
-        },
-        titleClick(e) {
-            console.log('titleClick', e);
+        gotoPage(routeKey){
+            let routeName;
+            function getRouteName(route){
+                for(let i=0; i<route.length; i++){
+                    if(routeKey === route[i].meta.routTitle){
+                        return route[i].name
+                    }else{
+                        let name = getRouteName(route[i].children || [])
+                        if(name){
+                            return name
+                        }
+                    }
+                }
+            }
+            routeName = getRouteName(this.routerData)
+            console.log(routeName)
         },
         isShowText(){
             if(this.isMobile){
@@ -112,7 +135,7 @@ export default {
     //z-index: 10;
     min-height: 100%;
     //box-shadow: 2px 0 6px rgba(0,21,41,.35);
-
+    
 }
 .sider_bar_collapsed{
     width: 80px;
@@ -145,4 +168,27 @@ export default {
 .logo_collapsed{
     width: 48px;
 }
+</style>
+<style lang="less">
+    .siderbar_img_icon{
+        height: 14px;
+        width: 14px;
+        margin-right: 10px;
+    }
+   
+    .sider_bar_box{
+   
+        .item_title{
+            display: flex;
+            align-items: center;
+        }
+        .ant-menu-item{
+            display: flex;
+            align-items: center;
+        }
+        .item_title_op_span{
+            opacity: 0;
+            max-width: 0;
+        }
+    }
 </style>
