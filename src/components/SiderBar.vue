@@ -10,6 +10,7 @@
 			mode="inline"
             theme="dark"
             :inline-collapsed="isMobile?false:collapsed"
+            @click="menuItemClick"
 		>
             <template v-for="value in routerData">
                 <a-sub-menu v-if="value.children" :key="value.meta.routTitle" >
@@ -69,6 +70,7 @@ export default {
             defaultOpenKeys: [''],
             menuSelectKeys: [''],
             routerData:{},
+            breadcrumbEmitData:[]
         }
 	},
 	computed: {},
@@ -83,8 +85,12 @@ export default {
     },
 	mounted() {
         
+
         //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
         this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routTitle] : ['']
+        
+        //初始化面包屑导航数据
+        this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
 
         //this.defaultOpenKeys = ['搜索列表','列表页']
         //console.log(this.menuSelectKeys)
@@ -93,7 +99,7 @@ export default {
 	watch: {
 		menuSelectKeys(newValue){
             this.gotoPage(newValue[0])
-            console.log(newValue)
+            //console.log(newValue)
         },
 	},
 	methods: {
@@ -112,7 +118,25 @@ export default {
                 }
             }
             routeName = getRouteName(this.routerData)
-            console.log(routeName)
+            console.log('跳转页面',routeName)
+            this.$router.push({
+                name:routeName
+            }).then(res=>{
+                //面包屑的监听数据 必须在路由跳转之后进行发送
+                //否则面包屑组件中的监听 在组件未创建时无法进入触发监听函数 
+                this.menuBreadcrumbEmit(this.breadcrumbEmitData)
+                //console.log('路由',res)
+            })
+               
+        },
+        menuItemClick(e){
+            //console.log('点击',e)
+            this.breadcrumbEmitData = e.keyPath
+           
+        },
+        menuBreadcrumbEmit(breadcrumbData){
+            //console.log('emit')
+            window.vm.$emit('menuBreadcrumb',breadcrumbData)
         },
         isShowText(){
             if(this.isMobile){

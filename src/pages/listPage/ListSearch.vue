@@ -1,5 +1,6 @@
 <template>
     <div class="list_table_box">
+        <!-- <Breadcrumb/> -->
         搜索文章
     </div>
 </template>
@@ -7,13 +8,10 @@
 <script>
 
 import Axios from '@/request/Axios.js'
-
+import Breadcrumb from '@/components/Breadcrumb.vue'
 export default {
-    name:'homelistReveallist',
     components: {
-  
-        
-      
+        Breadcrumb    
     },
     props: {
 
@@ -37,7 +35,7 @@ export default {
 
     },
     mounted() {
-        this.getList()
+        //this.getList()
     },
     
     watch: {

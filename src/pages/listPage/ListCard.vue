@@ -1,19 +1,22 @@
 <template>
     <div class="list_table_box">
+        <Breadcrumb/>
         list card
+        
+        <Detail/>
     </div>
 </template>
 
 <script>
 
 import Axios from '@/request/Axios.js'
-
+import Breadcrumb from '@/components/Breadcrumb.vue'
+import Detail from '@/pages/listPage/Detail.vue'
 export default {
-    name:'homelistReveallist',
+    
     components: {
-  
-        
-      
+        Breadcrumb,
+        Detail
     },
     props: {
 
@@ -23,6 +26,7 @@ export default {
             listData:[
                 
             ],
+            arr:[],
             page:1,
             listTotal:0,
             finishedText:'',
@@ -37,19 +41,20 @@ export default {
 
     },
     mounted() {
-        this.getList()
+        //this.getList()
+        
     },
     
     watch: {
 
     },
-    beforeRouteLeave(to,from,next){
+    // beforeRouteLeave(to,from,next){
         
-        this.$nextTick(()=>{
-            next()
-        })
+    //     this.$nextTick(()=>{
+    //         next()
+    //     })
         
-    },
+    // },
     activated(){
       
     },

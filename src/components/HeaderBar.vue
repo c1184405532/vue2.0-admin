@@ -170,9 +170,15 @@ export default {
         },
 	},
 	methods: {
-        logout(){
+        logout(){ 
+            window.removeToken();
+            window.removeLocalStorage('routerIsBack')
+            this.$router.replace({
+                name:'user/login',
+            })
             console.log('退出登录')
         },
+        
         removeList(index){
             let title = "通知"
             if(index === 1){

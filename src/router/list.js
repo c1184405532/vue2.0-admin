@@ -20,7 +20,7 @@ beforeRouteLeave(to,from,next){
 使用示例详见 listReveal/List
 //
 */
-
+const LayoutChildrenRouterView = ()=> import('@/pages/homePage/LayoutChildrenRouterView.vue');
 const ListTable = ()=> import('@/pages/listPage/ListTable.vue');
 const ListCard = ()=> import('@/pages/listPage/ListCard.vue');
 const ListSearch = ()=> import('@/pages/listPage/ListSearch.vue');
@@ -32,6 +32,7 @@ export default [
         meta: {routTitle:'列表页',icon:'mail',img:require('@/assets/home.jpg')},
         path:'list',
         name:'layout/list',
+        component:LayoutChildrenRouterView,
         children:[
             {
                 meta: {routTitle:'表格列表',icon:'mail'},
@@ -49,7 +50,7 @@ export default [
                 meta: {routTitle:'搜索列表',icon:'mail'},
                 path:'search',
                 name:'list/listSearch',
-                //component:ListSearch
+                component:LayoutChildrenRouterView,
                 children:[
                     { 
                         meta: {routTitle:'搜索列表(文章)',icon:'mail'},

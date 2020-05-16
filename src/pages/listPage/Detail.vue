@@ -2,8 +2,6 @@
     <div class="detail_box">
         
        
-       <p>{{parentData.name}}</p>
-       <p>{{parentData.age}}</p>
     </div>
 </template>
 
@@ -21,7 +19,7 @@ export default {
     },
     data() {
         return {
-            parentData:{}
+           
         };
     },
     computed: {
@@ -32,7 +30,7 @@ export default {
         this.parentData = this.$route.query
     },
     mounted() {
-        
+       
     },
     watch: {
 

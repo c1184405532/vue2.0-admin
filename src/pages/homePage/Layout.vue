@@ -42,25 +42,23 @@
                 </a-layout-header>
                 <a-layout-content>
                     <router-view/>
+                    <!-- <LayoutChildrenRouterView/> -->
                 </a-layout-content>
                 <a-layout-footer>Footer</a-layout-footer>
             </a-layout>
         </a-layout>
-        <!-- <div class="ignore_page_content">
-            <router-view/>
-        </div> -->
     </div>
 </template>
 
 <script>
 import SiderBar from '@/components/SiderBar.vue'
 import HeaderBar from '@/components/HeaderBar.vue'
-
+import LayoutChildrenRouterView from '@/pages/homePage/LayoutChildrenRouterView.vue'
 export default {
     components: {
-       SiderBar,
-       HeaderBar,
-     
+        SiderBar,
+        HeaderBar,
+        LayoutChildrenRouterView
     },
     props: {
 
@@ -137,9 +135,9 @@ export default {
         display: flex;
         flex-direction: column;      
     }
-    .content_box{
+    // .content_box{
         
-    }
+    // }
     .layout_sider{
         position: relative;
         z-index: 10;

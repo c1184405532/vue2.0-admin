@@ -2,27 +2,23 @@
     <div id="app">
 
         <!-- <transition  mode="out-in" :name="transitionName"> -->
-            <!--如需使用v-if方式添加缓存组件 请注释第二个keep-alive 放开第一行 放开后配置方式详见 router/home.js-->
-            <!-- <keep-alive v-if="$route.meta.keepAlive"> 
-                <router-view/>
-            </keep-alive>  -->
-            <!-- v-if="!$route.meta.keepAlive" -->
-            <!-- <router-view v-if="!$route.meta.keepAlive"/> -->
+            
             <!--如需使用当前方式缓存组件 组件内需配置name字段 详见listReveal/List 组件使用示例
-                在缓存组件页面中必须配置 否则删除了之后 再次添加无响应
+                在缓存组件页面中必须配置 否则删除了keepAliveData中的数据之后 再次新添加的第一次无响应 依然会缓存
                 beforeRouteLeave(to,from,next){
                     this.$nextTick(()=>{
                         next()
                     })
                 },
-                请在你的组件中使用
+                请在你的组件中使用 
+                添加缓存组件
                 window.vm.$emit('setKeepAliveData','homelistReveallist')
                 删除缓存组件 
                 window.vm.$emit('clearKeepAliveData','homelistReveallist')
             -->
-            <keep-alive :include="keepAliveData"> 
+            <!-- <keep-alive :include="keepAliveData">  -->
                 <router-view />
-            </keep-alive>
+            <!-- </keep-alive> -->
         <!-- </transition> -->
     </div>
 </template>
