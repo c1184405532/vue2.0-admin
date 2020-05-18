@@ -73,41 +73,67 @@ export default {
     },
 	data() {
 		return {
-            defaultOpenKeys: [''],
-            menuSelectKeys: [''],
+            defaultOpenKeys: [],
+            menuSelectKeys: [],
             routerData:{},
-            breadcrumbEmitData:[]
+            breadcrumbEmitData:[],
+            isClickMenuItem:false,
         }
 	},
 	computed: {},
 	created() {
+        console.log('创建新siderBar')
         //获取路由文件
         this.routerData = RouterPathData.options.routes.map(
             (route)=> (route.meta && route.meta.type === 'LayoutRouter' ? route : '')
         ).filter( (routeData)=> (routeData) )[0].children;
 
-        //默认展开展开列表项 必须在未创建dom时配置 否则不生效
-        this.defaultOpenKeys = this.routerData[0] && this.routerData[0].meta ? [this.routerData[0].meta.routTitle] : [''];
+        if((getSessionStorage('sessionBreadcrumbEmitData'))){
+            let EmitData = getSessionStorage('sessionBreadcrumbEmitData').reverse();
+            EmitData.pop();
+            this.defaultOpenKeys = EmitData;
+            console.log('this.defaultOpenKeys ',this.defaultOpenKeys )
+        }else{
+            //默认展开展开列表项 必须在未创建dom时配置 否则不生效
+            this.defaultOpenKeys = this.routerData[0] && this.routerData[0].meta ? [this.routerData[0].meta.routTitle] : [''];
+        }
+        
+
     },
 	mounted() {
         
-
-        //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
-        this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routTitle] : ['']
+        if(getSessionStorage('sessionBreadcrumbEmitData')){
+            //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
+            this.menuSelectKeys = [getSessionStorage('sessionBreadcrumbEmitData')[0]]
+            //this.menuSelectKeys = ['搜索列表(项目)']
+            //初始化面包屑导航数据
+            this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
+        }else{
+            //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
+            this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routTitle] : ['']
+            //this.menuSelectKeys = ['搜索列表(项目)']
+            //初始化面包屑导航数据
+            this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
+        }
         
-        //初始化面包屑导航数据
-        this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
 
         //this.defaultOpenKeys = ['搜索列表','列表页']
-        //console.log(this.menuSelectKeys)
-        console.log(this.routerData)
+        //console.log('this.menuSelectKeys',this.menuSelectKeys)
+        //console.log(this.routerData)
+        //console.log('this.breadcrumbEmitData',this.breadcrumbEmitData)
+        //在移动端登录 watch监听不到menuSelectKeys的改变 无法跳转指定页面 所以手动跳转一次
+        //pc端也不用担心性能问题 虽然会执行两次 但是由于是同一路由 vue-router会自动截断 不会进行两次跳转
+        this.gotoPage(this.menuSelectKeys[0])
     },
 	watch: {
 		menuSelectKeys(newValue){
             this.gotoPage(newValue[0])
             //console.log(newValue)
         },
-	},
+    },
+    destroyed(){
+        //console.log('siderBar 卸载')
+    },
 	methods: {
         gotoPage(routeKey){
             let routeName;
@@ -125,14 +151,18 @@ export default {
             }
             routeName = getRouteName(this.routerData)
             //console.log('跳转页面',routeName)
+            //console.log('siderBar key',this.menuSelectKeys)
+            //console.log('key path',this.breadcrumbEmitData)
+            //存储当前选中的列表页和列表项 防止 移动端 pc端切换时丢失数据
+            setSessionStorage('sessionBreadcrumbEmitData',this.breadcrumbEmitData)
             this.$router.push({
                 name:routeName
             }).then(res=>{
                 //面包屑的监听数据 必须在路由跳转之后进行发送
                 //否则面包屑组件中的监听 在组件未创建时无法进入触发监听函数 
                 this.menuBreadcrumbEmit(this.breadcrumbEmitData)
-                //如果是移动端 点击了侧边栏选择跳转页面之后 关闭drawer弹窗
-                if(this.isMobile){
+                //如果是移动端 并且触发点击函数之后 侧边栏切换跳转页面 关闭drawer弹窗
+                if(this.isMobile && this.isClickMenuItem){
                     this.mobileClose()
                 }
                 //console.log('路由',res)
@@ -140,6 +170,7 @@ export default {
                
         },
         menuItemClick(e){
+            this.isClickMenuItem = true;
             //console.log('点击',e)
             this.breadcrumbEmitData = e.keyPath
            

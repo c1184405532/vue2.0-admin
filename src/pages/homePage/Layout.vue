@@ -5,10 +5,10 @@
             wrapClassName="sider_drawer_box"
             :closable="false"
             :keyboard="false"
-            :visible="collapsed ? false : true"
-            :after-visible-change="afterVisibleChange"
+            :visible="drawerVisible()"
             :bodyStyle="{height:'100vh',padding:0}"
             @close="onClose"
+            handle
             v-if="isMobile"
         >
             <SiderBar
@@ -40,6 +40,7 @@
                         :toggleClick="toggleClick"
                         :collapsed="collapsed"
                         :isMobile="isMobile"
+                        :isFixed="true"
                     />
                 </a-layout-header>
                 <a-layout-content class="content_box">
@@ -76,11 +77,12 @@ export default {
                     {icon:'user',text:'个人中心',routeName:''}
                 ]
             },
+            
        
         };
     },
     computed: {
-
+        
     },
     created() {
 
@@ -89,20 +91,22 @@ export default {
         this.eventClientScale()
     },
     watch: {
-        
+       
     },
     methods: {
         //点击菜单收起展开按钮
         toggleClick(){
             this.collapsed = !this.collapsed
+            //console.log('toggleClick',this.collapsed)
         },
-        onClose(e){
-            console.log('aaa',e)
+        drawerVisible(){
+            return this.collapsed ? false : true
+        },
+        onClose(){
+            //console.log('关闭',)
             this.collapsed = true;
         },
-        afterVisibleChange(){
-
-        },
+        
         eventClientScale(){
             if(document.body.clientWidth < 750){
                 this.collapsed = true;
@@ -110,6 +114,7 @@ export default {
             }else{
                 this.isMobile = false;
             }
+           
             if(this.collapsed && document.body.clientWidth > 750){
                 this.collapsed = false;
             }
@@ -121,9 +126,11 @@ export default {
                 }else{
                     this.isMobile = false;
                 }
+                
                 if(this.collapsed && document.body.clientWidth > 750){
                     this.collapsed = false;
                 }
+                
             })
         }
     },
@@ -135,10 +142,27 @@ export default {
         height: 100%;
         width: 100%;
         display: flex;
-        flex-direction: column;      
+        flex-direction: column;  
+        @media (max-width:750px) {
+            .ant-layout{
+                //min-height: 100%;
+                
+                .ant-layout{
+                    overflow-x: hidden;
+                }
+            } 
+        
+            
+        }   
+        // @media (min-width:750px){
+        //     .ant-layout.ant-layout-has-sider > .ant-layout, .ant-layout.ant-layout-has-sider > .ant-layout-content {
+        //         overflow-x: hidden;
+        //     }
+        // }
     }
     .content_box{
         margin: 24px;
+        min-height: auto;
     }
     .layout_sider{
         position: relative;

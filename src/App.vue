@@ -83,6 +83,9 @@ export default {
 </script>
 
 <style lang="less">
+    #app{
+        //overflow: auto;
+    }
     //转场动画
     .slide-right-enter-active,
     .slide-right-leave-active,

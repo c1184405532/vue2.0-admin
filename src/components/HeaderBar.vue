@@ -1,8 +1,6 @@
 <template>
-	<div class="header_bar_box">
-        
-             
-        <div class="left" @click="toggleClick">
+	<div class="header_bar_box" :style="headerStyle()">   
+        <div class="left" @click="toggleClick" >
             <img class="logo" v-if="isMobile" src="@/assets/admin_logo.jpg" alt="">
             <a-icon class="menu" :style="{fontSize:'20px'}" :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
         </div>
@@ -95,6 +93,10 @@
 export default {
 	components: {},
 	props: {
+        isFixed:{
+            type:Boolean,
+            default:false,
+        },
         //用户数据
         userData:{
             type:Object,
@@ -173,6 +175,7 @@ export default {
         logout(){ 
             window.removeToken();
             window.removeLocalStorage('routerIsBack')
+            removeSessionStorage('sessionBreadcrumbEmitData')
             this.$router.replace({
                 name:'user/login',
             })
@@ -189,6 +192,14 @@ export default {
             this.tabsData[index].title = title;
             this.tabsData[index].data = [];
         },
+        headerStyle(){
+           
+            if(this.isFixed){
+                let width = this.isMobile ? 0 : this.collapsed ? 80 : 256;
+                return {position:'fixed',width:'calc(100% - '+ width +'px'+')'};
+               
+            }
+        }
         
     }
 }

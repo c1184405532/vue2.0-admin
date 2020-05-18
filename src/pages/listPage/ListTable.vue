@@ -1,7 +1,9 @@
 <template>
     <div class="list_table_box">
         <Breadcrumb/>
-        list表格
+        <div class="item_block" :key="index" v-for="(value,index) in itemData">
+            内容{{index}}
+        </div>
     </div>
 </template>
 
@@ -25,7 +27,8 @@ export default {
             listTotal:0,
             finishedText:'',
             successText:'刷新成功',
-            isListError:false
+            isListError:false,
+            itemData:[],
         };
     },
     computed: {
@@ -35,6 +38,11 @@ export default {
 
     },
     mounted() {
+        let arr = [];
+        for(let i=0; i<10; i++ ){
+            arr.push(i)
+        }
+        this.itemData = arr;
        // this.getList()
     },
     
@@ -92,7 +100,17 @@ export default {
     .list_table_box{
         height: 100%;
         width: 100%;
-        
+        .item_block{
+            height: 200px;
+            width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            margin-top: 100px;
+            background: #333;
+        }
     }
      
 </style>
