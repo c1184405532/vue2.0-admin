@@ -14,6 +14,7 @@
             <SiderBar
                 :collapsed="collapsed"
                 :isMobile="isMobile"
+                :mobileClose="onClose"
             />
         </a-drawer>
         <a-layout>
@@ -28,10 +29,11 @@
                 <SiderBar
                     :collapsed="collapsed"
                     :isMobile="isMobile"
+                    :mobileClose="onClose"
                 />
             </a-layout-sider>
            
-            <a-layout class="content_box">
+            <a-layout >
                 <a-layout-header class="layout_header">
                     <HeaderBar
                         :userData="userData"
@@ -40,7 +42,7 @@
                         :isMobile="isMobile"
                     />
                 </a-layout-header>
-                <a-layout-content>
+                <a-layout-content class="content_box">
                     <router-view/>
                     <!-- <LayoutChildrenRouterView/> -->
                 </a-layout-content>
@@ -135,9 +137,9 @@ export default {
         display: flex;
         flex-direction: column;      
     }
-    // .content_box{
-        
-    // }
+    .content_box{
+        margin: 24px;
+    }
     .layout_sider{
         position: relative;
         z-index: 10;

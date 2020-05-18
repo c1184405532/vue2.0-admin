@@ -64,6 +64,12 @@ export default {
             type:Boolean,
             default:false
         },
+        mobileClose:{
+            type:Function,
+            default:function(){
+
+            }
+        }
     },
 	data() {
 		return {
@@ -118,13 +124,17 @@ export default {
                 }
             }
             routeName = getRouteName(this.routerData)
-            console.log('跳转页面',routeName)
+            //console.log('跳转页面',routeName)
             this.$router.push({
                 name:routeName
             }).then(res=>{
                 //面包屑的监听数据 必须在路由跳转之后进行发送
                 //否则面包屑组件中的监听 在组件未创建时无法进入触发监听函数 
                 this.menuBreadcrumbEmit(this.breadcrumbEmitData)
+                //如果是移动端 点击了侧边栏选择跳转页面之后 关闭drawer弹窗
+                if(this.isMobile){
+                    this.mobileClose()
+                }
                 //console.log('路由',res)
             })
                

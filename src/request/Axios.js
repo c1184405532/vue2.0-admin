@@ -14,6 +14,7 @@ requestToastConfig toast请求配置 Object
     successRequestToastType:false,//是否显示请求后请求成功 状态status === 200 toast加载框 默认不显示 Boolean
     errorRequestToastType:true,//是否显示请求后请求成功 状态 status !== 200 toast加载框提示加载错误失败原因 取message字段 默认显示 Boolean
 	afterErrorRequestToastType:true,//是否显示请求失败  toast加载框 默认显示 Boolean
+	successMessage:String,//请求成功后提示文字
 	message:String//请求前toast提示文字
   }  
 */
@@ -54,6 +55,7 @@ function initAxiosConfig(requestToastConfig){
 		beforeRequestToastType:true,
 		errorRequestToastType:true,
 		successRequestToastType:false,
+		successMessage:'',
 		message:"加载中..."
 	}
 	Object.assign(toastConfig,requestToastConfig || {})

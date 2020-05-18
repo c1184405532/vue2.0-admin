@@ -20,11 +20,12 @@ instance.interceptors.request.use(function (config) {
     }
     //console.log('在发送请求之前做些什么',config)
     if(instance.toastConfig.beforeRequestToastType){
-        message.info({
-            content: config.toastmessage || instance.toastConfig.message,
-            //duration:1000,
-            //loadingType: 'spinner'
-        });
+        window.vm.$emit('globaleSpinToggle',{type:true,tip:config.toastmessage || instance.toastConfig.message})
+        // message.info({
+        //     content: c,
+        //     //duration:1000,
+        //     //loadingType: 'spinner'
+        // });
     }
     console.log(config)
     return config;
@@ -36,10 +37,11 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     //对响应数据做点什么
- 
+    window.vm.$emit('globaleSpinToggle',{type:false})
     if(instance.toastConfig.successRequestToastType && response.data.status === 200){
+        //window.vm.$emit('globaleSpinToggle',{type:true,tip:response.data.message})
         message.success({
-            content: response.data.message,
+            content:  instance.toastConfig.successMessage || response.data.message,
             //duration:baseClearToastTime,
             //loadingType: 'spinner'
         });
@@ -60,6 +62,7 @@ instance.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     console.dir(error)
     const config = error.config;
+    window.vm.$emit('globaleSpinToggle',{type:false})
     //console.log(config)
     //是否配置请求错误重连
     if(config && config.shouldRetry && config.retry || (config.retry && error.code === "ECONNABORTED")){

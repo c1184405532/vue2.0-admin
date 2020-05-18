@@ -16,20 +16,28 @@
                 删除缓存组件 
                 window.vm.$emit('clearKeepAliveData','homelistReveallist')
             -->
-            <!-- <keep-alive :include="keepAliveData">  -->
-                <router-view />
-            <!-- </keep-alive> -->
+            <keep-alive :include="keepAliveData">  
+                <Spin wrapperClassName="globale_spin_box" size="large"  :spinning="spinningLoding" :tip="spinningTip">
+                    <router-view />
+                </Spin>
+            </keep-alive>
         <!-- </transition> -->
     </div>
 </template>
 
 <script>
+import {Spin} from 'ant-design-vue'; 
 export default {
     name: "app",
+    components: {
+        Spin,
+    },
     data(){
         return {
             transitionName:'',
             keepAliveData:[],
+            spinningLoding:false,
+            spinningTip:'',
         }
     },
     
@@ -50,6 +58,11 @@ export default {
                     this.keepAliveData.splice(keepIndex,1)
                 }
                 console.log('清除',this.keepAliveData)
+            })
+
+            window.vm.$off('globaleSpinToggle').$on('globaleSpinToggle',(spinData)=>{
+                this.spinningLoding = spinData ? spinData.type : false;
+                this.spinningTip= spinData ? spinData.tip : '';
             })
         })
     },
@@ -88,5 +101,18 @@ export default {
     .slide-left-enter {
         transform: translate(100%, 0);
         transition-timing-function: ease-in;
+    }
+    .globale_spin_box{
+        height: 100%;
+        width: 100%;
+        .ant-spin-container{
+            height: 100%;
+            width: 100%;
+        }
+        .ant-spin-text{
+            
+            padding-top: 20px !important;
+            font-size: 18px;
+        }
     }
 </style>

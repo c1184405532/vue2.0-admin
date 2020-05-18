@@ -94,7 +94,9 @@ export default {
                             passWord:values.userPassword,
                         },
                         requestToastConfig:{
-                            message:'正在登陆...'
+                            successRequestToastType:true,
+                            successMessage:'登录成功',
+                            message:'正在登陆......',
                         },
                         
                     }).then((res)=>{

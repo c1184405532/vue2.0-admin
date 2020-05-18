@@ -30,7 +30,7 @@ export default {
         vm.$off('menuBreadcrumb').$on('menuBreadcrumb',(breadcrumbData)=>{
             breadcrumbData.reverse()
             this.breadcrumbItemData = breadcrumbData
-            console.log(this.breadcrumbItemData)
+            //console.log(this.breadcrumbItemData)
         })
         
     },
@@ -39,9 +39,9 @@ export default {
         //console.log(this.breadcrumbItemData)
     },
     watch: {
-        breadcrumbItemData(newValue,oldValue){
-           //console.log('watch',this.breadcrumbItemData)
-        },
+        // breadcrumbItemData(newValue,oldValue){
+        //    //console.log('watch',this.breadcrumbItemData)
+        // },
     },
     beforeDestroy(){
        //console.log('breadcrumb beforeDestroy')
