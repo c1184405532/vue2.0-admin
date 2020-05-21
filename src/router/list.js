@@ -29,37 +29,37 @@ const ListSearchProject = ()=> import('@/pages/listPage/ListSearchProject.vue');
 //在生成路由时，主路由上的path会被自动添加到子路由之前，所以子路由上的path不用在重新声明主路由上的path了。
 export default [
     {
-        meta: {routTitle:'列表页',icon:'mail',img:require('@/assets/home.jpg')},
+        meta: {routeTitle:'列表页',icon:'mail',img:require('@/assets/home.jpg')},
         path:'list',
         name:'layout/list',
         component:LayoutChildrenRouterView,
         children:[
             {
-                meta: {routTitle:'表格列表',icon:'mail'},
+                meta: {routeTitle:'表格列表',icon:'mail'},
                 path:'table',
                 name:'list/listTable',
                 component:ListTable
             }, 
             {
-                meta: {routTitle:'卡片列表',icon:'mail'},
+                meta: {routeTitle:'卡片列表',icon:'mail'},
                 path:'card',
                 name:'list/listCard',
                 component:ListCard
             }, 
             {
-                meta: {routTitle:'搜索列表',icon:'mail'},
+                meta: {routeTitle:'搜索列表',icon:'mail'},
                 path:'search',
                 name:'list/listSearch',
                 component:LayoutChildrenRouterView,
                 children:[
                     { 
-                        meta: {routTitle:'搜索列表(文章)',icon:'mail'},
+                        meta: {routeTitle:'搜索列表(文章)',icon:'mail'},
                         path:'searchArticle',
                         name:'list/listSearch/article',
                         component:ListSearch
                     },
                     { 
-                        meta: {routTitle:'搜索列表(项目)',img:require('@/assets/home.jpg')},
+                        meta: {routeTitle:'搜索列表(项目)',img:require('@/assets/home.jpg')},
                         path:'searchProject',
                         name:'list/listSearch/project',
                         component:ListSearchProject
@@ -69,7 +69,7 @@ export default [
         ]
     },
     {
-        meta: {routTitle:'搜索页',icon:'search'},
+        meta: {routeTitle:'搜索页',icon:'search'},
         path:'search',
         name:'layout/search',
         component:ListTable

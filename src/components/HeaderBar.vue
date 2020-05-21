@@ -196,7 +196,7 @@ export default {
            
             if(this.isFixed){
                 let width = this.isMobile ? 0 : this.collapsed ? 80 : 256;
-                return {position:'fixed',width:'calc(100% - '+ width +'px'+')'};
+                return {position:'fixed',zIndex:'100',width:'calc(100% - '+ width +'px'+')'};
                
             }
         }

@@ -10,10 +10,15 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import {  message } from 'ant-design-vue';
 
+import VueApexCharts from 'vue-apexcharts'
+
 Vue.config.productionTip = false;
 Vue.prototype.$message = message;
-Vue.use(VueRouter)
+console.dir(router)
 Vue.use(Antd);
+Vue.use(VueRouter)
+Vue.use(VueApexCharts)
+Vue.component('apexchart',VueApexCharts)
 //全局Vue实例
 window.vm =  new Vue({
     render: h => h(App),

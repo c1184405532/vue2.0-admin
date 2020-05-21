@@ -1,5 +1,6 @@
 import VueRouter from "vue-router";
-import ListRouter from "./list"
+import ListRouter from "./list.js"
+import ChartpageRouter from "./chartpage.js"
 //防止重复跳转同一路由报警告
 const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -17,7 +18,8 @@ VueRouter.prototype.push = function push(location) {
 // })
 const Login = ()=> import('@/pages/user/Login.vue');
 const Layout = ()=> import('@/pages/homePage/Layout.vue');
-export default new VueRouter({
+const FourZeroFour = ()=> import('@/pages/errorPage/404.vue');
+const RouterInstance =  new VueRouter({
     routes: [
         {
             path:'/',
@@ -37,6 +39,13 @@ export default new VueRouter({
             component:Layout,
             children:[
                 ...ListRouter,
+                ...ChartpageRouter,
+                {
+                    meta: {routeTitle:'404',icon:'error',isAddSiderBar:false},
+                    path:'404',
+                    name:'layout/404',
+                    component:FourZeroFour
+                },
             ]
         }, 
         
@@ -54,11 +63,27 @@ export default new VueRouter({
                 //此时再点击登录 然后点击回退就会进入login页面 
                 //所以判断如果已经登录了 那么回退或者跳转到登录页面直接跳转到首页
                 window.vm.$router.replace({
-                    name:'layout/home',
+                    name:'list/listTable',
                 })
+                //console.log('to.name == user/login')
             } 
-        // console.log('to',to)
+            //console.log('scrollBehavior')
         //console.log('to',to)
         // console.log('savedPosition',savedPosition)
     },
 })
+//路由守卫 用于权限判断
+RouterInstance.beforeEach((to,from,next)=>{
+    //debugger
+    //console.log('to',to)
+    //console.log('from',from)
+    if(to.meta.routeTitle === '搜索页'){
+        //RouterInstance.replace();
+        next({name:'layout/404'});
+    }else{
+        next();
+    }
+    //next()
+    
+})
+export default RouterInstance

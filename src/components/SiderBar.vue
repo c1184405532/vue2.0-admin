@@ -13,36 +13,36 @@
             @click="menuItemClick"
 		>
             <template v-for="value in routerData">
-                <a-sub-menu v-if="value.children" :key="value.meta.routTitle" >
+                <a-sub-menu v-if="value.children" :key="value.meta.routeTitle" >
                     <span slot="title" >
                         <img class="siderbar_img_icon" :src="value.meta.img" alt="" v-if="value.meta.img">
                         <a-icon :type="value.meta.icon" v-else/>
-                        <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routTitle}}</span>
+                        <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routeTitle}}</span>
                     </span>
                     <template v-for="childrenValue in value.children">
-                        <a-sub-menu v-if="childrenValue.children" :key="childrenValue.meta.routTitle" >
+                        <a-sub-menu v-if="childrenValue.children" :key="childrenValue.meta.routeTitle" >
                             <span slot="title" class="item_title">
                                 <img class="siderbar_img_icon" :src="childrenValue.meta.img" alt="" v-if="childrenValue.meta.img">
                                 <a-icon :type="childrenValue.meta.icon" v-else/>
-                                <span>{{childrenValue.meta.routTitle}}</span>
+                                <span>{{childrenValue.meta.routeTitle}}</span>
                             </span>
-                            <a-menu-item :key="subChildren.meta.routTitle"  v-for="subChildren in childrenValue.children">
+                            <a-menu-item :key="subChildren.meta.routeTitle"  v-for="subChildren in childrenValue.children">
                                 <img class="siderbar_img_icon" :src="subChildren.meta.img" alt="" v-if="subChildren.meta.img">
                                 <a-icon :type="subChildren.meta.icon" v-else/>
-                                {{subChildren.meta.routTitle}}
+                                {{subChildren.meta.routeTitle}}
                             </a-menu-item>
                         </a-sub-menu>
-                        <a-menu-item v-else :key="childrenValue.meta.routTitle" >
+                        <a-menu-item v-else :key="childrenValue.meta.routeTitle" >
                             <img class="siderbar_img_icon" :src="childrenValue.meta.img" alt="" v-if="childrenValue.meta.img">
                             <a-icon :type="childrenValue.meta.icon" v-else/>
-                            {{childrenValue.meta.routTitle}}
+                            {{childrenValue.meta.routeTitle}}
                         </a-menu-item>
                     </template>
                 </a-sub-menu>
-                <a-menu-item  :key="value.meta.routTitle" v-else>    
+                <a-menu-item  :key="value.meta.routeTitle" v-else>    
                     <img class="siderbar_img_icon" :src="value.meta.img" alt="" v-if="value.meta.img">
                     <a-icon :type="value.meta.icon" v-else/>
-                    <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routTitle}}   </span>   
+                    <span :class="!isMobile &&  collapsed?'item_title_op_span':''">{{value.meta.routeTitle}}   </span>   
                 </a-menu-item>
             </template>
 			
@@ -86,8 +86,12 @@ export default {
         //获取路由文件
         this.routerData = RouterPathData.options.routes.map(
             (route)=> (route.meta && route.meta.type === 'LayoutRouter' ? route : '')
-        ).filter( (routeData)=> (routeData) )[0].children;
-
+        ).filter( (routeData)=> (routeData) )[0].children.filter((routeData)=> {
+            if(routeData.meta.isAddSiderBar !== false){
+                return routeData 
+            }   
+        });
+        console.log(this.routerData)
         if((getSessionStorage('sessionBreadcrumbEmitData'))){
             let EmitData = getSessionStorage('sessionBreadcrumbEmitData').reverse();
             EmitData.pop();
@@ -95,7 +99,7 @@ export default {
             console.log('this.defaultOpenKeys ',this.defaultOpenKeys )
         }else{
             //默认展开展开列表项 必须在未创建dom时配置 否则不生效
-            this.defaultOpenKeys = this.routerData[0] && this.routerData[0].meta ? [this.routerData[0].meta.routTitle] : [''];
+            this.defaultOpenKeys = this.routerData[0] && this.routerData[0].meta ? [this.routerData[0].meta.routeTitle] : [''];
         }
         
 
@@ -110,7 +114,7 @@ export default {
             this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
         }else{
             //默认列表选择项 必须在创建dom之后配置 否则watch监听跳转页面不生效
-            this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routTitle] : ['']
+            this.menuSelectKeys = this.routerData[0] && this.routerData[0].children ? [this.routerData[0].children[0].meta.routeTitle] : ['']
             //this.menuSelectKeys = ['搜索列表(项目)']
             //初始化面包屑导航数据
             this.breadcrumbEmitData = [...this.menuSelectKeys,...this.defaultOpenKeys]
@@ -121,9 +125,12 @@ export default {
         //console.log('this.menuSelectKeys',this.menuSelectKeys)
         //console.log(this.routerData)
         //console.log('this.breadcrumbEmitData',this.breadcrumbEmitData)
+
         //在移动端登录 watch监听不到menuSelectKeys的改变 无法跳转指定页面 所以手动跳转一次
-        //pc端也不用担心性能问题 虽然会执行两次 但是由于是同一路由 vue-router会自动截断 不会进行两次跳转
-        this.gotoPage(this.menuSelectKeys[0])
+
+        if(document.body.clientWidth < 750){
+            this.gotoPage(this.menuSelectKeys[0])
+        }    
     },
 	watch: {
 		menuSelectKeys(newValue){
@@ -139,7 +146,7 @@ export default {
             let routeName;
             function getRouteName(route){
                 for(let i=0; i<route.length; i++){
-                    if(routeKey === route[i].meta.routTitle){
+                    if(routeKey === route[i].meta.routeTitle){
                         return route[i].name
                     }else{
                         let name = getRouteName(route[i].children || [])
