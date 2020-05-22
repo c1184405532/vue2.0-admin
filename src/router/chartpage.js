@@ -22,7 +22,7 @@ beforeRouteLeave(to,from,next){
 */
 const LayoutChildrenRouterView = ()=> import('@/pages/homePage/LayoutChildrenRouterView.vue');
 const BarChart = ()=> import('@/pages/chartPage/BarChart.vue');
-
+const LineChart = ()=> import('@/pages/chartPage/LineChart.vue');
 //在生成路由时，主路由上的path会被自动添加到子路由之前，所以子路由上的path不用在重新声明主路由上的path了。
 export default [
     {
@@ -37,7 +37,12 @@ export default [
                 name:'apexcharts/barChart',
                 component:BarChart
             }, 
-            
+            {
+                meta: {routeTitle:'折线图',icon:'mail'},
+                path:'lineChart',
+                name:'apexcharts/lineChart',
+                component:LineChart
+            },
         ]
     },  
 ]
