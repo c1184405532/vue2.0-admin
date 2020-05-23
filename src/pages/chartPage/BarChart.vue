@@ -1,6 +1,9 @@
 <template>
     <div class="bar_chart_box">
-        <h2>柱状图集合</h2>
+        <h2>柱状图集合 &nbsp;
+            <a href="https://github.com/apexcharts/vue-apexcharts" target="_blank">图表库git地址</a>&nbsp;&nbsp;
+            <a href="https://apexcharts.com/vue-chart-demos/column-charts/column-with-data-labels/" target="_blank">图表库文档</a>
+        </h2>
         <a-row>
             <a-col :xs="24" :sm="12">
                 <div class="chart_box">
