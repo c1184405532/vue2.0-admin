@@ -13,7 +13,22 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    semi: 0,
-    quotes: [2, "double", { avoidEscape: true, allowTemplateLiterals: true }]
+    "space-before-function-paren": ["error", "never"],
+    semi: "off",
+    quotes: ["error", "double", { avoidEscape: true, allowTemplateLiterals: true }]
+
+  },
+  globals: {
+    // "AMap": true,
+    globalThis: true,
+    getToken: true,
+    setToken: true,
+    removeToken: true,
+    getSessionStorage: true,
+    setSessionStorage: true,
+    removeSessionStorage: true,
+    setLocalStorage: true,
+    getLocalStorage: true,
+    removeLocalStorage: true
   }
 }

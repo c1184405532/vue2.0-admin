@@ -1,14 +1,19 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
-import Home from "@/views/Home.vue"
+// import Home from "@/views/Home.vue"
+const Login = () => import(/* webpackChunkName: "login" */ "@/pages/login/index.vue");
 const RepairOrderAssignment = () => import(/* webpackChunkName: "about" */ "../views/About.vue");
 Vue.use(VueRouter);
 console.log(`55`);
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    redirect: "/login"
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login
   },
   {
     path: "/about",
