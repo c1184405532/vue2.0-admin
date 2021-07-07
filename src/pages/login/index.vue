@@ -2,52 +2,31 @@
   <div class="login-layout">
     <div class="login-content-box">
       <div class="login-conent">
-        <!-- <img class="img-logo" src="@/assets/images/login_company_logo.png" alt=""> -->
         <div class="main-box">
           <div class="main-title">后台管理系统</div>
           <a-form class="from-box" layout="horizontal" :form="form">
             <a-form-item>
-              <a-input
-                v-decorator="[
-                  'userAccount',
-                  { rules: [{ required: true, message: userAccountMessage }] }
-                ]"
+              <a-input v-decorator="['userAccount',{ rules: [{ required: true, message: userAccountMessage }] }]"
                 class="input-box"
                 placeholder="请输入账号"
               >
-                <img
-                  class="input-icon"
-                  slot="prefix"
-                  src="@/assets/images/phone_icon.png"
-                  alt=""
-                />
+                <img class="input-icon" slot="prefix" src="@/assets/images/phone_icon.png" alt=""/>
                 <a-icon type="user" style="color: rgba(0, 0, 0, 0.25)" />
               </a-input>
             </a-form-item>
             <a-form-item>
               <a-input
-                v-decorator="[
-                  'verificationCode',
-                  {
-                    rules: [
-                      { required: true, message: verificationCodeMessage }
-                    ]
-                  }
-                ]"
-                style="width: 200px"
+                v-decorator="['verificationCode',{rules: [{ required: true, message: verificationCodeMessage }] }]"
+                style="width: 180px"
                 class="input-box verification-input"
                 placeholder="验证码"
               >
-                <img
-                  class="input-icon"
-                  slot="prefix"
-                  src="@/assets/images/verification_icon.png"
-                  alt=""
-                />
+                <img class="input-icon" slot="prefix" src="@/assets/images/verification_icon.png" alt=""/>
               </a-input>
               <CountDown
-                :onClick="getVerificationCode"
+                @click.native="getVerificationCode"
                 :loading="countDownLoading"
+                ref="countDownRef"
               />
             </a-form-item>
           </a-form>
@@ -56,8 +35,9 @@
             :loading="submitLoading"
             class="submit-btn"
             type="primary"
-            >登录</a-button
           >
+            登录
+          </a-button>
         </div>
       </div>
     </div>
@@ -65,7 +45,7 @@
 </template>
 
 <script>
-import CountDown from "@/components/countDown/index";
+import CountDown from "./countDown/index";
 // import { setUserMessage } from "@/utils/index";
 // import { getLoginUserMessage } from "@/pages/server";
 import { login } from "./server";
@@ -85,27 +65,23 @@ export default {
       form: this.$form.createForm(this, { name: "horizontal_login" }),
       userAccountMessage: "请输入账号",
       verificationCodeMessage: "请输入验证码",
-      VerificationCodeText: "获取验证码", // 获取验证码按钮文本信息
       countDownLoading: false
     };
   },
   computed: {},
   created() {},
   mounted() {
-    console.log(6666);
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        userAccount: "",
-        verificationCode: ""
-      });
-      const token = window.getToken();
-      if (token) {
-        this.$router.replace({ name: "/layout" });
-      }
-    });
+    this.queryToken();
   },
   watch: {},
   methods: {
+    queryToken() {
+      const token = getToken();
+      if (token) {
+        console.log("token", token)
+        // this.$router.replace({ name: "/layout" });
+      }
+    },
     handSubmit() {
       this.form.validateFields("", {}, async(error, values) => {
         if (!error) {
@@ -181,31 +157,27 @@ export default {
 
     getVerificationCode() {
       const { form } = this;
-      let status = true;
       form.validateFields(["userAccount"], {}, async(error, values) => {
         if (!error) {
           this.countDownLoading = true;
           try {
-            this.countDownLoading = false;
             const result = await this.simulatedLogin();
             if (result.success) {
+              this.$refs.countDownRef.onClick();
               this.$message.info("验证码已发送，请查收！");
             }
-          } catch (e) {
+          } finally {
             this.countDownLoading = false;
           }
-        } else {
-          status = false;
         }
       });
-      return status;
     },
 
     simulatedLogin() {
-      return Promise.then((resove) => {
+      return new Promise((resolve) => {
         setTimeout(() => {
-          resove({ success: true });
-        }, 1000);
+          resolve({ success: true })
+        }, 1000)
       });
     }
 
@@ -274,30 +246,26 @@ export default {
     justify-content: center;
   }
   .login-conent {
-    width: 1100px;
+    width: 920px;
     height: 500px;
     display: flex;
-    .img-logo {
-      flex: 1;
-      width: 625px;
-      height: 500px;
-    }
     .main-box {
       flex: 1;
-      background: #fff;
+      background: rgba(0, 0, 0, 0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
+      border-radius: 8px;
       .main-title {
-        margin-top: 90px;
-        margin-bottom: 50px;
+        margin-top: 70px;
+        margin-bottom: 40px;
         font-size: 32px;
         font-weight: bold;
         color: #177fe2;
         text-align: center;
       }
       .from-box {
-        width: 380px;
+        width: 320px;
         .input-box {
           height: 45px;
           margin-top: 6px;
@@ -309,10 +277,14 @@ export default {
           width: 210px;
           margin-right: 16px;
         }
+        .ant-form-item-with-help{
+          padding-bottom: 20px;
+          //margin-top: 5px;
+        }
       }
       .submit-btn {
         margin-top: 12px;
-        width: 380px;
+        width: 320px;
         height: 45px;
         background: linear-gradient(0deg, #188cc3, #166cd7);
         border: 1px solid #2c93cf;

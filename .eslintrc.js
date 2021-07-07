@@ -20,9 +20,10 @@ module.exports = {
   },
   globals: {
     // "AMap": true,
-    globalThis: true,
+    $Vue:true,
     getToken: true,
     setToken: true,
+    globalThis: true,
     removeToken: true,
     getSessionStorage: true,
     setSessionStorage: true,

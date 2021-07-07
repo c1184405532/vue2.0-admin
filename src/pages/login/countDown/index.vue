@@ -1,7 +1,6 @@
 <template>
   <div class="count-down-box">
     <a-button
-      @click="getVerificationCode"
       :loading="loading"
       :disabled="disabled"
       class="count-down-btn"
@@ -27,14 +26,6 @@ export default {
     countDownSecond: {
       type: Number,
       default: 60
-    },
-    /**
-     * const status = this.onClick();
-     * status === true 才会触发倒计时滚动，所以onClick里面需要根据状态是否触发倒计时，return true or false
-     */
-    onClick: {
-      type: Function,
-      default: function() {}
     }
   },
   data() {
@@ -49,33 +40,33 @@ export default {
     }
   },
   created() {
-    const currentDateSecond = Date.parse(new Date()) / 1000;
-    const second = getLocalStorage("countDownSecond") - currentDateSecond;
-    if (second && second > 0) {
-      this.verificationCodeText = `${second}秒`;
-      this.setCountDown();
-    } else {
-      this.verificationCodeText = this.defaultText;
-      removeLocalStorage("countDownSecond");
-    }
+    this.queryOldStatus();
   },
   mounted() {},
   watch: {},
   methods: {
-    getVerificationCode() {
-      const isInProgress = this.verificationCodeText.indexOf("秒");
-      if (isInProgress !== -1 || this.loading) return;
-      const status = this.onClick();
-      if (status) {
-        const currentDateSecond = Date.parse(new Date()) / 1000;
-        setLocalStorage(
-          "countDownSecond",
-          currentDateSecond + this.countDownSecond
-        );
-        const second = getLocalStorage("countDownSecond") - currentDateSecond;
+    // 刷新页面时查询是否存在上次状态
+    queryOldStatus() {
+      const currentDateSecond = Date.parse(new Date()) / 1000;
+      const second = getLocalStorage("countDownSecond") - currentDateSecond;
+      if (second && second > 0) {
         this.verificationCodeText = `${second}秒`;
         this.setCountDown();
+      } else {
+        this.verificationCodeText = this.defaultText;
+        removeLocalStorage("countDownSecond");
       }
+    },
+
+    onClick() {
+      const currentDateSecond = Date.parse(new Date()) / 1000;
+      setLocalStorage(
+        "countDownSecond",
+        currentDateSecond + this.countDownSecond
+      );
+      const second = getLocalStorage("countDownSecond") - currentDateSecond;
+      this.verificationCodeText = `${second}秒`;
+      this.setCountDown();
     },
 
     setCountDown() {
@@ -100,7 +91,7 @@ export default {
   display: inline-block;
   .count-down-btn {
     height: 45px;
-    width: 164px;
+    width: 124px;
     background: #ffffff;
     border: 1px solid #177fe2;
     border-radius: 4px;

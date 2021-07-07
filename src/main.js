@@ -11,7 +11,8 @@ import "ant-design-vue/dist/antd.css";
 Vue.config.productionTip = false;
 Vue.prototype.$message = message;
 Vue.use(Antd);
-new Vue({
+
+globalThis.$Vue = new Vue({
   router,
   render: h => h(App)
 }).$mount("#app")
