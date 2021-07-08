@@ -91,6 +91,10 @@ export default {
           };
 
           this.submitLoading = true;
+          setTimeout(() => {
+            this.$router.replace({ name: "mainLayout" });
+            this.submitLoading = false;
+          }, 1500)
           console.log(payload);
           // await this.login(payload);
           // const token = getToken();
@@ -103,7 +107,6 @@ export default {
           //     this.$router.replace({name: "/layout"});
           //   },200)
           // }
-          this.submitLoading = false;
         }
       });
     },
