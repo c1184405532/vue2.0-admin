@@ -42,7 +42,7 @@
       @click="menuItemClick"
     >
       <template v-for="value in routerData">
-        <a-sub-menu v-if="value.children" :key="value.meta.routeTitle">
+        <a-sub-menu v-if="value.children" :key="value.name">
           <span slot="title">
             <!-- <img
               class="_siderbar-img-icon"
@@ -52,13 +52,13 @@
             />
             <a-icon :type="value.meta.icon" v-else /> -->
             <span :class="collapsed ? 'item_title_op_span' : ''">{{
-              value.meta.routeTitle
+              value.meta.title
             }}</span>
           </span>
           <template v-for="childrenValue in value.children">
             <a-sub-menu
               v-if="childrenValue.children"
-              :key="childrenValue.meta.routeTitle"
+              :key="childrenValue.name"
             >
               <span slot="title" class="item_title">
                 <!-- <img
@@ -68,7 +68,7 @@
                   v-if="childrenValue.meta.img"
                 />
                 <a-icon :type="childrenValue.meta.icon" v-else /> -->
-                <span>{{ childrenValue.meta.routeTitle }}</span>
+                <span>{{ childrenValue.meta.title }}</span>
               </span>
               <a-menu-item
                 :key="subChildren.meta.routeTitle"
@@ -96,7 +96,7 @@
             </a-menu-item>
           </template>
         </a-sub-menu>
-        <a-menu-item :key="value.meta.routeTitle" v-else>
+        <a-menu-item :key="value.name" v-else>
           <!-- <img
             class="_siderbar-img-icon"
             :src="value.meta.img"
@@ -105,7 +105,7 @@
           />
           <a-icon :type="value.meta.icon" v-else /> -->
           <span :class="collapsed ? 'item_title_op_span' : ''"
-            >{{ value.meta.routeTitle }}
+            >{{ value.meta.title }}
           </span>
         </a-menu-item>
       </template>
@@ -140,7 +140,7 @@ export default {
   computed: {},
   created() {
     this.initRouteData();
-    this.setDefaultOpenkeys();
+    // this.setDefaultOpenkeys();
   },
   mounted() {
     this.initSiderBarData();
@@ -157,8 +157,8 @@ export default {
     initRouteData() {
       const [{ children: mainChildRoutes }] = routes.filter((route) => route?.meta?.key === "mainLayout");
       // this.routerData = this.setRouteComponent(mainChildRoutes, "originPath");
-      const aaa = this.setRouteComponent(mainChildRoutes, "originPath");
-      console.log("aaa", aaa)
+      this.routerData = this.setRouteComponent(mainChildRoutes);
+      console.log(this.routerData);
     },
 
     menuStringToObj(menus) {
@@ -190,21 +190,13 @@ export default {
     setRouteComponent(routes = [], type) {
       if (type !== "originPath") return routes;
       return routes.map((route) => {
-        console.log(route)
         if (Array.isArray(route.children)) {
           route.children = this.setRouteComponent(route.children, type);
         }
-        const result = {
-          ...route
+        return {
+          ...route,
+          component: () => import(/* webpackChunkName: "doc-[request]" */`@/${route.component}`)
         }
-
-        // result.name = () => { return import(`@/components/renderRoute`) }
-        return result;
-        // return {
-        //   ...route
-        //   // eslint-disable-next-line
-        //   //name: () => import(`@/components/renderRoute`)
-        // }
       })
     },
 

@@ -40,26 +40,26 @@
           :required="false"
           label="用户头像"
         >
-          <UploadImg
+          <!-- <UploadImg
             :onChange="getFileList"
             :files="avatarImgs"
             size="2"
             maxNum="1"
             uploadTitle="上传头像"
-          />
+          /> -->
         </a-form-item>
       </a-form>
     </a-modal>
   </div>
 </template>
 <script>
-import UploadImg from "@/components/uploadImg/index";
-import { getLoginUserMessage } from "@/pages/server";
+// import UploadImg from "@/components/uploadImg/index";
+// import { getLoginUserMessage } from "@/pages/server";
 // eslint-disable-next-line
-import { setUserMessage } from "@/utils/index";
+// import { setUserMessage } from "@/utils/index";
 export default {
   components: {
-    UploadImg
+    // UploadImg
   },
   props: {},
   data() {
@@ -86,22 +86,22 @@ export default {
   methods: {
 
     initUserData() {
-      getLoginUserMessage()
-        .then(res => {
-          console.log(res)
-          const { userName, origin, identityCardName, userPriv, entryTime, mobilNo, mobilNo1, mobilNo2, userImgUrl } = res;
-          this.avatar = userImgUrl;
-          this.userData = [
-            { label: "姓名：", content: identityCardName },
-            { label: "昵称：", content: userName },
-            { label: "登录手机号：", content: mobilNo },
-            { label: "其他手机号1：", content: mobilNo1 },
-            { label: "其他手机号2：", content: mobilNo2 },
-            { label: "籍贯：", content: origin },
-            { label: "角色：", content: userPriv },
-            { label: "入职时间：", content: entryTime }
-          ]
-        })
+      // getLoginUserMessage()
+      //   .then(res => {
+      //     console.log(res)
+      //     const { userName, origin, identityCardName, userPriv, entryTime, mobilNo, mobilNo1, mobilNo2, userImgUrl } = res;
+      //     this.avatar = userImgUrl;
+      //     this.userData = [
+      //       { label: "姓名：", content: identityCardName },
+      //       { label: "昵称：", content: userName },
+      //       { label: "登录手机号：", content: mobilNo },
+      //       { label: "其他手机号1：", content: mobilNo1 },
+      //       { label: "其他手机号2：", content: mobilNo2 },
+      //       { label: "籍贯：", content: origin },
+      //       { label: "角色：", content: userPriv },
+      //       { label: "入职时间：", content: entryTime }
+      //     ]
+      //   })
     },
 
     handleOk() {
