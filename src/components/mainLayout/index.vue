@@ -20,7 +20,7 @@
       <a-layout-sider
         v-model="collapsed"
         v-if="!isMobile"
-        :width="180"
+        :width="siderBarWidth"
         :trigger="null"
         collapsible
         class="layout-sider"
@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import SiderBar from "@/components/siderBar/index";
+import SiderBar from "./siderBar.vue";
 import HeaderBar from "@/components/headerBar/index";
-
+import { siderBarWidth } from "./const.js";
 export default {
   components: {
     SiderBar,
@@ -63,6 +63,7 @@ export default {
   props: {},
   data() {
     return {
+      siderBarWidth,
       collapsed: false,
       isMobile: false,
       userData: {}

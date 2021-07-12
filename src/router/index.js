@@ -27,7 +27,15 @@ const routes = [
         path: "order",
         name: "mainLayout/order",
         component: RenderRoute,
-        meta: { title: "订单管理", icon: "mail" }
+        meta: { title: "订单管理", icon: "mail" },
+        children: [
+          {
+            path: "repair",
+            name: "mainLayout/order/repair",
+            component: RenderRoute,
+            meta: { title: "维修订单", icon: "mail" }
+          }
+        ]
       },
       {
         path: "auth",
