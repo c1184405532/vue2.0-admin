@@ -6,7 +6,7 @@
       <span>{{ menu.meta.title }} </span>
     </span>
     <template v-for="item in menu.children">
-      <a-menu-item v-if="!item.children" :key="item.name">
+      <a-menu-item v-if="!item.children" :title="item.meta.title" :key="item.name">
         <img v-if="item.meta.img" :src="item.meta.img" class="_siderbar-img-icon"/>
         <a-icon :type="item.meta.icon" v-else/>
         <span>{{ item.meta.title }} </span>
