@@ -92,7 +92,7 @@ export default {
 
           this.submitLoading = true;
           setTimeout(() => {
-            this.$router.replace({ name: "mainLayout" });
+            this.$router.replace({ name: "mainLayout/order/repair" });
             this.submitLoading = false;
           }, 1500)
           console.log(payload);
