@@ -62,25 +62,17 @@ export default {
   padding: 0;
   margin: 0;
 }
-html,
-body {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-}
+// html,
+// body {
+//   height: 100vh;
+//   width: 100vw;
+//   overflow: hidden;
+// }
 #app {
-  height: 100%;
-  width: 100%;
   font-size: 14px;
   .global-spin-box {
-    height: 100%;
-    width: 100%;
-    .ant-spin-container {
-      height: 100% !important;
-      width: 100%;
-    }
     .ant-spin {
-      max-height: 100% !important;
+      max-height: 100vh !important;
     }
     .ant-spin-text {
       font-size: 18px;
