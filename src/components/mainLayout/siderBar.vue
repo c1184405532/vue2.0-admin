@@ -196,6 +196,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+._sider-bar-collapsed {
+  width: 80px !important;
+}
 ._sider-bar-box {
   min-height: 100%;
   .logo {
@@ -220,34 +223,10 @@ export default {
       animation-duration: 0.3s;
     }
   }
-}
-._sider-bar-collapsed {
-  width: 80px !important;
-}
-
-.logo-collapsed {
-  width: 48px;
-}
-</style>
-<style lang="less">
-._siderbar-img-icon {
-  height: 14px;
-  width: 14px;
-  margin-right: 10px;
-}
-
-._sider-bar-box {
-  .item_title {
-    display: flex;
-    align-items: center;
-  }
-  .ant-menu-item {
-    display: flex;
-    align-items: center;
-  }
-  .item_title_op_span {
-    opacity: 0;
-    max-width: 0;
+  ._siderbar-img-icon {
+    height: 14px;
+    width: 14px;
+    margin-right: 10px;
   }
 }
 </style>

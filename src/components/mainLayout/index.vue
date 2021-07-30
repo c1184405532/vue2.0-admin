@@ -6,20 +6,19 @@
         :width="siderBarWidth"
         :trigger="null"
         collapsible
-        class="_layout-sider"
       >
         <SiderBar :collapsed="collapsed"/>
       </a-layout-sider>
 
       <a-layout class="_layout-content-box">
-        <a-layout-header :style="{ width: headerWitdh }" class="_layout-header" ref="layoutHeaderRef">
+        <a-layout-header :style="{ width: headerWitdh }" class="_layout-header">
           <HeaderBar
             :userData="userData"
             :toggleClick="toggleClick"
             :collapsed="collapsed"
           />
         </a-layout-header>
-        <a-layout-content class="_layout-main-box">
+        <a-layout-content class="_layout-view-box">
           <router-view />
         </a-layout-content>
         <!-- <a-layout-footer></a-layout-footer> -->
@@ -73,10 +72,6 @@ export default {
       this.collapsed = !this.collapsed;
     },
 
-    drawerVisible() {
-      return !this.collapsed;
-    },
-
     setHeaderWitdh() {
       const { collapsed } = this;
       this.headerWitdh = `calc(100% - ${collapsed ? 80 : siderBarWidth}px)`
@@ -95,18 +90,10 @@ export default {
   ._layout-content-box {
     width: 100%;
     height: 100%;
-    //overflow: auto;
   }
-  ._layout-main-box {
+  ._layout-view-box {
     margin: 12px;
-    // min-height: auto;
     min-width: 1100px;
-  }
-  ._layout-sider {
-    position: relative;
-    z-index: 10;
-    min-height: 100%;
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
   }
   ._layout-header {
     position: fixed;

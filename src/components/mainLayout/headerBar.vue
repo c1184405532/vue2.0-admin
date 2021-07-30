@@ -8,23 +8,23 @@
       />
     </div>
     <div class="right">
-      <a-dropdown overlayClassName="user_drop_box" class="user_drop_box">
-        <div class="user_content">
-          <img :src="userData.avatar" alt="" class="user_avatar" />
-        </div>
+      <a-dropdown overlayClassName="_user-overlay-box">
+        <span class="user-drop-box">
+          <img :src="userData.avatar" alt="" class="user-avatar" />
+          <div class="user-name">{{ userData.name }}</div>
+        </span>
         <a-menu slot="overlay">
           <a-menu-item
             v-for="(value, index) in userData.list"
             :key="index"
-            class="user_list_box"
           >
             <a-icon :type="value.icon" />
-            <span class="user_list_text">{{ value.text }}</span>
+            <span>{{ value.text }}</span>
           </a-menu-item>
-          <a-divider class="divider_style" />
-          <a-menu-item class="user_list_box" @click="logout">
+          <a-divider class="divider-style" />
+          <a-menu-item @click="logout">
             <a-icon type="logout" />
-            <span class="user_list_text">退出登录</span>
+            <span>退出登录</span>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -36,23 +36,16 @@
 export default {
   components: {},
   props: {
-    // 用户数据
+    /**
+     * @param { String } name 用户名
+     * @param { String } avatar 头像地址
+     * @param { Array } list [{icon:"",text:""}] 下拉菜单项
+     */
     userData: {
       type: Object,
       default: function() {
         return {};
       }
-      /*
-      数据格式
-      {
-          name:'陈禹廷',//用户名
-          avatar:require('@/assets/avatar.jpg'),//用户头像
-          list:[
-              //icon 列表icon text 列表文字  routeName 点击列表跳转的页面 是name 不是path
-              {icon:'user',text:'个人中心',routeName:''}
-          ]
-      }
-  */
     },
     collapsed: {
       type: Boolean,
@@ -77,7 +70,6 @@ export default {
       this.$router.replace({
         name: "user/login"
       });
-      console.log("退出登录");
     }
   }
 };
@@ -108,124 +100,37 @@ export default {
     }
   }
   .right {
-    height: 100%;
     display: flex;
     padding-right: 24px;
-  }
-  .message {
-    height: 100%;
-    cursor: pointer;
-    margin-right: 12px;
-    width: 50px;
-    padding: 0 6px 0 6px;
-    .notice {
-      color: #666;
-      background: none;
-    }
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-  }
-  .user_drop_box {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 0 12px;
-    transition: all 0.3s;
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-    .user_content {
-      height: 100%;
+    .user-drop-box {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 0 12px;
+      transition: all 0.3s;
+      &:hover {
+        background: rgba(0, 0, 0, 0.025);
+      }
+      .user-avatar {
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .user-name {
+        font-size: 14px;
+      }
     }
   }
 }
-.user_avatar {
-  height: 32px;
-  width: 32px;
-  border-radius: 50%;
-  margin-right: 8px;
-}
-.notice_box {
-  height: 100%;
-  display: inline-block;
-}
-.user_name {
-  font-size: 14px;
-}
-.divider_style {
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
+
 </style>
 <style lang="less">
-.user_drop_box {
-  .user_list_box {
-    display: flex;
-    align-items: center;
-    padding-right: 24px;
+._user-overlay-box{
+  .divider-style {
+    margin-top: 6px;
+    margin-bottom: 6px;
   }
 }
 
-.header_message_box {
-  .ant-tabs-nav .ant-tabs-tab {
-    padding: 12px 4px;
-  }
-  .ant-dropdown-content {
-    padding: 0;
-  }
-  @media (min-width: 596px) {
-    .tabs_box {
-      width: 336px;
-      border-radius: 0;
-    }
-  }
-  .ant-tabs-bar {
-    margin: 0;
-  }
-  @media (max-width: 596px) {
-    .ant-dropdown-menu {
-      border-radius: 0;
-    }
-  }
-  @media screen and (max-width: 480px) {
-    width: 100% !important;
-  }
-
-  .message_list_box {
-    //width: 336px;
-    .message_list {
-      padding: 12px 24px;
-      border-bottom: 1px solid #f0f0f0;
-      transition: all 0.3s;
-      cursor: pointer;
-      .ant-list-item {
-        margin-bottom: 0;
-      }
-      &:hover {
-        background: #e6f7ff;
-      }
-    }
-    .ant-list-footer {
-      padding: 0;
-    }
-    .list_footer {
-      display: flex;
-      height: 46px;
-      width: 100%;
-      .item {
-        width: 50%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        &:nth-child(2) {
-          border-left: 1px solid #f0f0f0;
-        }
-      }
-    }
-  }
-}
 </style>
