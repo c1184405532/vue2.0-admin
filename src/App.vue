@@ -57,21 +57,24 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 #app {
   font-size: 14px;
-  .global-spin-box {
-    .ant-spin-container,.ant-spin-spinning{
-      height: 100vh;
-      max-height: none;
-    }
+  .global-spin-box /deep/ .ant-spin{
+    height: 100vh !important;
+    max-height: none;
     .ant-spin-text {
       font-size: 18px;
     }
+    // .ant-spin-container,.ant-spin-spinning{
+    //   height: 100vh;
+    //   max-height: none;
+    // }
   }
 }
 </style>
