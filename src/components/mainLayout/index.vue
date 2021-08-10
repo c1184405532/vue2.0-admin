@@ -11,12 +11,14 @@
       </a-layout-sider>
 
       <a-layout class="_layout-content-box">
-        <a-layout-header :style="{ width: headerWitdh }" class="_layout-header">
-          <HeaderBar
-            :userData="userData"
-            :toggleClick="toggleClick"
-            :collapsed="collapsed"
-          />
+        <a-layout-header class="_layout-header">
+          <div class="header-content" :style="{ width: headerWitdh }" >
+            <HeaderBar
+              :userData="userData"
+              :toggleClick="toggleClick"
+              :collapsed="collapsed"
+            />
+          </div>
         </a-layout-header>
         <a-layout-content class="_layout-view-box">
           <router-view />
@@ -43,7 +45,7 @@ export default {
       collapsed: false,
       isMobile: false,
       userData: {},
-      headerWitdh: 0
+      headerWitdh: `calc(100% - ${siderBarWidth}px)`
     };
   },
   computed: {},
@@ -96,11 +98,15 @@ export default {
     min-width: 1100px;
   }
   ._layout-header {
-    position: fixed;
-    top: 0;
-    padding: 0;
-    background: #fff;
-    transition: width .2s;
+    .header-content{
+      position: fixed;
+      top: 0;
+      right: 0;
+      padding: 0;
+      background: #fff;
+      transition: width .2s;
+    }
+
   }
 }
 </style>

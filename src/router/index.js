@@ -3,8 +3,8 @@ import VueRouter from "vue-router"
 // import Home from "@/views/Home.vue"
 const Login = () => import(/* webpackChunkName: "login" */ "@/pages/login/index.vue");
 const MainLayout = () => import(/* webpackChunkName: "mainLayout" */ "@/components/mainLayout/index.vue");
-const RenderRoute = () => import(/* webpackChunkName: "mainLayout" */ "@/components/renderRoute/index.vue");
-// const RepairOrderAssignment = () => import(/* webpackChunkName: "about" */ "../views/About.vue");
+const RenderRoute = () => import(/* webpackChunkName: "renderRoute" */ "@/components/renderRoute/index.vue");
+const RepairOrder = () => import(/* webpackChunkName: "repairOrder" */ "@/pages/orderManagement/repairOrder/index.vue");
 Vue.use(VueRouter);
 console.log(`55`);
 const routes = [
@@ -32,8 +32,8 @@ const routes = [
           {
             path: "repair",
             name: "mainLayout/order/repair",
-            component: RenderRoute,
-            meta: { title: "维修订单", icon: "mail" }
+            meta: { title: "维修订单", icon: "mail" },
+            component: RepairOrder
           }
         ]
       },

@@ -67,9 +67,7 @@ export default {
     logout() {
       window.removeToken();
       removeSessionStorage("selectSiderBarData");
-      this.$router.replace({
-        name: "user/login"
-      });
+      this.$router.replace({ name: "login" });
     }
   }
 };
@@ -77,7 +75,6 @@ export default {
 
 <style scoped lang="less">
 ._header-bar-box {
-  position: relative;
   display: flex;
   align-items: center;
   height: 64px;
